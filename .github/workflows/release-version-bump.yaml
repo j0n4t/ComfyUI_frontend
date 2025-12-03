@@ -74,9 +74,8 @@ jobs:
           echo "capitalised=${CAPITALISED_TYPE@u}" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+        uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.PR_GH_TOKEN }}
           commit-message: '[release] Increment version to ${{ steps.bump-version.outputs.NEW_VERSION }}'
           title: ${{ steps.bump-version.outputs.NEW_VERSION }}
           body: |
