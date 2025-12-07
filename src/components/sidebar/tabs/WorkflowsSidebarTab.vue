@@ -31,38 +31,7 @@
             type="dashed"
             class="ml-2"
           />
-          <TreeExplorer
-            v-model:expanded-keys="dummyExpandedKeys"
-            :root="renderTreeNode(openWorkflowsTree, WorkflowTreeType.Open)"
-            :selection-keys="selectionKeys"
-          >
-            <template #node="{ node }">
-              <TreeExplorerTreeNode :node="node">
-                <template #before-label="{ node: treeNode }">
-                  <span
-                    v-if="
-                      treeNode.data?.isModified || !treeNode.data?.isPersisted
-                    "
-                    >*</span
-                  >
-                </template>
-                <template #actions="{ node: treeNode }">
-                  <Button
-                    class="close-workflow-button"
-                    icon="pi pi-times"
-                    text
-                    :severity="
-                      workspaceStore.shiftDown ? 'danger' : 'secondary'
-                    "
-                    size="small"
-                    @click.stop="
-                      handleCloseWorkflow(treeNode.data as ComfyWorkflow)
-                    "
-                  />
-                </template>
-              </TreeExplorerTreeNode>
-            </template>
-          </TreeExplorer>
+          <OpenWorkflowsTreeExplorer />
         </div>
         <div
           v-show="workflowStore.bookmarkedWorkflows.length > 0"
@@ -133,11 +102,11 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import OpenWorkflowsTreeExplorer from '@/components/OpenWorkflowsTreeExplorer.vue'
 import NoResultsPlaceholder from '@/components/common/NoResultsPlaceholder.vue'
 import SearchBox from '@/components/common/SearchBox.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import TreeExplorer from '@/components/common/TreeExplorer.vue'
-import TreeExplorerTreeNode from '@/components/common/TreeExplorerTreeNode.vue'
 import SidebarTabTemplate from '@/components/sidebar/tabs/SidebarTabTemplate.vue'
 import WorkflowTreeLeaf from '@/components/sidebar/tabs/workflows/WorkflowTreeLeaf.vue'
 import { useTreeExpansion } from '@/composables/useTreeExpansion'
@@ -148,7 +117,6 @@ import {
   useWorkflowBookmarkStore,
   useWorkflowStore
 } from '@/platform/workflow/management/stores/workflowStore'
-import { useWorkspaceStore } from '@/stores/workspaceStore'
 import type { TreeExplorerNode, TreeNode } from '@/types/treeExplorerTypes'
 import { appendJsonExt } from '@/utils/formatUtil'
 import { buildTree, sortedTree } from '@/utils/treeUtil'
@@ -180,19 +148,10 @@ const handleSearch = async (query: string) => {
 
 const workflowStore = useWorkflowStore()
 const workflowService = useWorkflowService()
-const workspaceStore = useWorkspaceStore()
 const { t } = useI18n()
 const expandedKeys = ref<Record<string, boolean>>({})
 const { expandNode, toggleNodeOnEvent } = useTreeExpansion(expandedKeys)
 const dummyExpandedKeys = ref<Record<string, boolean>>({})
-
-const handleCloseWorkflow = async (workflow?: ComfyWorkflow) => {
-  if (workflow) {
-    await workflowService.closeWorkflow(workflow, {
-      warnIfUnsaved: !workspaceStore.shiftDown
-    })
-  }
-}
 
 enum WorkflowTreeType {
   Open = 'Open',
@@ -214,10 +173,6 @@ const workflowsTree = computed(() =>
 // Bookmarked workflows tree is flat.
 const bookmarkedWorkflowsTree = computed(() =>
   buildTree(workflowStore.bookmarkedWorkflows, (workflow) => [workflow.key])
-)
-// Open workflows tree is flat.
-const openWorkflowsTree = computed(() =>
-  buildTree(workflowStore.openWorkflows, (workflow) => [workflow.key])
 )
 
 const renderTreeNode = (

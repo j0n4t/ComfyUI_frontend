@@ -5,6 +5,17 @@
     @mouseenter="isTopMenuHovered = true"
     @mouseleave="isTopMenuHovered = false"
   >
+    <div class="open-workflows-dropdown min-w-0 pointer-events-auto">
+      <IconButton
+        type="transparent"
+        class="h-full"
+        icon="icon-[comfy--workflow]"
+        @click="handleOpenWorkflowsDropdownClick"
+      />
+      <Popover ref="openWorkflowsDropdown">
+        <OpenWorkflowsTreeExplorer />
+      </Popover>
+    </div>
     <div class="min-w-0 flex-1">
       <SubgraphBreadcrumb />
     </div>
@@ -63,6 +74,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { Popover } from 'primevue'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -80,6 +92,15 @@ import { useQueueStore } from '@/stores/queueStore'
 import { useRightSidePanelStore } from '@/stores/workspace/rightSidePanelStore'
 import { useWorkspaceStore } from '@/stores/workspaceStore'
 import { isElectron } from '@/utils/envUtil'
+
+import OpenWorkflowsTreeExplorer from './OpenWorkflowsTreeExplorer.vue'
+
+const openWorkflowsDropdown = ref<InstanceType<typeof Popover>>()
+const handleOpenWorkflowsDropdownClick = (event: MouseEvent) => {
+  if (event.detail === 1) {
+    openWorkflowsDropdown.value?.toggle(event)
+  }
+}
 
 const workspaceStore = useWorkspaceStore()
 const rightSidePanelStore = useRightSidePanelStore()
