@@ -193,6 +193,20 @@ describe('useMediaAssetActions', () => {
 
         expect(capturedFilenames.values).toContain('my-image.jpeg')
       })
+
+      it('should use display_name for input assets when available', async () => {
+        const actions = useMediaAssetActions()
+
+        const asset = createMockAsset({
+          name: 'my-image.jpeg',
+          display_name: 'folder/my-image.jpeg',
+          tags: ['input']
+        })
+
+        await actions.addWorkflow(asset)
+
+        expect(capturedFilenames.values).toContain('folder/my-image.jpeg')
+      })
     })
 
     describe('Cloud mode (isCloud = true)', () => {

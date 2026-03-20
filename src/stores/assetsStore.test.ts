@@ -147,14 +147,32 @@ vi.mock('@/stores/queueStore', () => ({
 
 // Mock asset mappers - add unique timestamps
 vi.mock('@/platform/assets/composables/media/assetMappers', () => ({
-  mapInputFileToAssetItem: vi.fn((name, index, type) => ({
-    id: `${type}-${index}`,
-    name,
-    size: 0,
-    created_at: new Date(Date.now() - index * 1000).toISOString(),
-    tags: [type],
-    preview_url: `http://test.com/${name}`
-  })),
+  mapInputFileToAssetItem: vi.fn((name, index, type) => {
+    // Parse filename to match the actual implementation
+    const parts = name.split('/')
+    const baseName = parts[parts.length - 1]
+    const subfolder = parts.length > 1 ? parts.slice(0, -1).join('/') : ''
+
+    // Construct URL parameters correctly
+    const params = new URLSearchParams({ filename: baseName, type })
+    if (subfolder) {
+      params.set('subfolder', subfolder)
+    }
+
+    return {
+      id: `${type}-${index}`,
+      name: baseName,
+      display_name: name,
+      size: 0,
+      created_at: new Date(Date.now() - index * 1000).toISOString(),
+      tags: [type],
+      preview_url: `http://test.com/view?${params}`,
+      user_metadata: {
+        filename: baseName,
+        subfolder
+      }
+    }
+  }),
   mapTaskOutputToAssetItem: vi.fn((task, output) => {
     const index = parseInt(task.jobId.split('_')[1]) || 0
     return {

@@ -262,11 +262,14 @@ export function useMediaAssetActions() {
     const assetType = getAssetType(targetAsset, 'input')
 
     // In Cloud mode, use asset_hash (the actual stored filename)
-    // In OSS mode, use the original name
+    // In OSS mode, use the display_name for input assets (includes subfolder path)
+    // or name for output assets
     const filename =
       isCloud && targetAsset.asset_hash
         ? targetAsset.asset_hash
-        : targetAsset.name
+        : assetType === 'input'
+          ? targetAsset.display_name || targetAsset.name
+          : targetAsset.name
 
     // Create annotated path for the asset
     const annotated = createAnnotatedPath(

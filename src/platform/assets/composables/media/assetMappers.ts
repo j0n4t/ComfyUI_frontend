@@ -2,6 +2,7 @@ import type { AssetItem } from '@/platform/assets/schemas/assetSchema'
 import type { OutputAssetMetadata } from '@/platform/assets/schemas/assetMetadataSchema'
 import type { AssetContext } from '@/platform/assets/schemas/mediaAssetSchema'
 import { appendCloudResParam } from '@/platform/distribution/cloudPreviewUtil'
+import { parseFilePath } from '@comfyorg/shared-frontend-utils/formatUtil'
 import { api } from '@/scripts/api'
 import type { ResultItemImpl, TaskItemImpl } from '@/stores/queueStore'
 
@@ -53,7 +54,7 @@ export function mapTaskOutputToAssetItem(
 
 /**
  * Maps input directory file to AssetItem format
- * @param filename The filename
+ * @param filename The filename (may include subfolder path)
  * @param index File index for unique ID
  * @param directory The directory type
  * @returns AssetItem formatted object
@@ -63,17 +64,29 @@ export function mapInputFileToAssetItem(
   index: number,
   directory: 'input' | 'output' = 'input'
 ): AssetItem {
-  const params = new URLSearchParams({ filename, type: directory })
+  const { filename: baseFilename, subfolder } = parseFilePath(filename)
+  const params = new URLSearchParams({
+    filename: baseFilename,
+    type: directory
+  })
+  if (subfolder) {
+    params.set('subfolder', subfolder)
+  }
   const preview_url = api.apiURL(`/view?${params}`)
   appendCloudResParam(params, filename)
 
   return {
     id: `${directory}-${index}-${filename}`,
-    name: filename,
+    name: baseFilename,
+    display_name: filename,
     size: 0,
     created_at: new Date().toISOString(),
     tags: [directory],
     thumbnail_url: api.apiURL(`/view?${params}`),
-    preview_url
+    preview_url,
+    user_metadata: {
+      filename: baseFilename,
+      subfolder
+    }
   }
 }
