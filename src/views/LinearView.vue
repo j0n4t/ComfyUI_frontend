@@ -12,6 +12,7 @@ import ExtensionSlot from '@/components/common/ExtensionSlot.vue'
 import TopbarBadges from '@/components/topbar/TopbarBadges.vue'
 import TopbarSubscribeButton from '@/components/topbar/TopbarSubscribeButton.vue'
 import WorkflowTabs from '@/components/topbar/WorkflowTabs.vue'
+import ErrorOverlay from '@/components/error/ErrorOverlay.vue'
 import { useSettingStore } from '@/platform/settings/settingStore'
 import { cn } from '@comfyorg/tailwind-utils'
 import LinearControls from '@/renderer/extensions/linearMode/LinearControls.vue'
@@ -99,18 +100,9 @@ function dragDrop(e: DragEvent) {
 <template>
   <MobileDisplay v-if="mobileDisplay" />
   <div v-else class="absolute size-full" @dragover.prevent>
-    <div
-      class="workflow-tabs-container pointer-events-auto h-(--workflow-tabs-height) w-full border-b border-interface-stroke shadow-interface"
-    >
-      <div class="flex h-full items-center">
-        <WorkflowTabs />
-        <TopbarBadges />
-        <TopbarSubscribeButton />
-      </div>
-    </div>
     <Splitter
       :key="splitterKey"
-      class="bg-comfy-menu-secondary-bg h-[calc(100%-var(--workflow-tabs-height))] w-full border-none"
+      class="bg-comfy-menu-secondary-bg size-full border-none"
       @resizestart="$event.originalEvent.preventDefault()"
       @resizeend="onResizeEnd"
     >
@@ -148,7 +140,7 @@ function dragDrop(e: DragEvent) {
         id="linearCenterPanel"
         data-testid="linear-center-panel"
         :size="CENTER_PANEL_SIZE"
-        class="relative flex min-w-[20vw] flex-col gap-4 text-muted-foreground outline-none"
+        class="relative flex min-w-[20vw] flex-col gap-1 text-muted-foreground outline-none"
         @drop="dragDrop"
       >
         <LinearProgressBar
@@ -159,7 +151,7 @@ function dragDrop(e: DragEvent) {
           :run-button-click="linearWorkflowRef?.runButtonClick"
           :typeform-widget-id="TYPEFORM_WIDGET_ID"
         />
-        <div class="absolute top-2 left-4.5 z-21">
+        <div class="absolute top-2 left-1 z-21 opacity-0 hover:opacity-100">
           <AppModeToolbar v-if="!isBuilderMode" />
         </div>
         <div ref="bottomLeftRef" class="absolute bottom-7 left-4 z-20" />
