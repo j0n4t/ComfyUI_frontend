@@ -64,7 +64,6 @@
               )
             "
             @update:model-value="row.widget.updateHandler"
-            @contextmenu="row.widget.handleContextMenu"
           />
         </AppInput>
       </div>
