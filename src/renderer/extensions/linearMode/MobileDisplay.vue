@@ -159,9 +159,9 @@ const menuEntries = computed<MenuItem[]>(() => [
     data-testid="linear-mobile"
   >
     <header
-      class="flex h-16 w-full items-center gap-3 border-b border-border-subtle bg-base-background px-4 py-3"
+      class="flex h-14 w-full items-center gap-3 border-b border-border-subtle bg-secondary-background px-2"
     >
-      <DropdownMenu :entries="menuEntries" />
+      <DropdownMenu :entries="menuEntries" button-size="lg" />
       <DropdownMenu
         :entries="workflowsEntries"
         class="max-h-[40vh] w-(--reka-dropdown-menu-content-available-width) overflow-y-auto"
@@ -188,7 +188,7 @@ const menuEntries = computed<MenuItem[]>(() => [
       </DropdownMenu>
       <CurrentUserButton v-if="isLoggedIn" :show-arrow="false" />
     </header>
-    <div class="size-full rounded-b-4xl contain-content">
+    <div class="size-full contain-content">
       <div
         :class="
           cn('relative size-full', !isSwiping && 'transition-[translate]')
@@ -231,7 +231,7 @@ const menuEntries = computed<MenuItem[]>(() => [
     </div>
     <div
       ref="sliderPaneRef"
-      class="flex h-22 w-full items-center justify-around gap-4 bg-secondary-background p-4"
+      class="flex h-12 w-full items-center justify-around gap-4 bg-secondary-background p-1"
       role="tablist"
     >
       <Button
@@ -239,7 +239,7 @@ const menuEntries = computed<MenuItem[]>(() => [
         :id="`mobile-app-${id}-tab`"
         :key="label"
         :variant="index === activeIndex ? 'secondary' : 'muted-textonly'"
-        class="h-14 grow flex-col"
+        class="h-full grow flex-col"
         role="tab"
         :aria-selected="index === activeIndex"
         :aria-controls="`mobile-app-${id}-panel`"
@@ -260,7 +260,7 @@ const menuEntries = computed<MenuItem[]>(() => [
             class="absolute -top-1 -right-1 size-2 animate-pulse rounded-full bg-primary-background"
           />
         </div>
-        {{ t(label) }}
+        <!-- {{ t(label) }} -->
       </Button>
     </div>
   </section>

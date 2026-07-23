@@ -149,14 +149,14 @@ function handleDragDrop() {
       <section
         v-if="mobile"
         :data-testid="linearRunButtonTestId"
-        class="border-t border-node-component-border p-4 pb-6"
+        class="border-t border-node-component-border p-2"
       >
         <LinearRunErrorWarning v-if="showRunErrorWarning" />
         <SubscribeToRunButton
           v-if="!isActiveSubscription"
           class="mt-4 w-full"
         />
-        <div v-else class="mt-4 flex">
+        <div v-else class="flex">
           <PartnerNodesList mobile />
           <Popover side="top" @open-auto-focus.prevent>
             <template #button>
