@@ -14,7 +14,6 @@ import ImagePreview from '@/renderer/extensions/linearMode/ImagePreview.vue'
 import LatentPreview from '@/renderer/extensions/linearMode/LatentPreview.vue'
 import LinearWelcome from '@/renderer/extensions/linearMode/LinearWelcome.vue'
 import LinearArrange from '@/renderer/extensions/linearMode/LinearArrange.vue'
-import LinearFeedback from '@/renderer/extensions/linearMode/LinearFeedback.vue'
 import MediaOutputPreview from '@/renderer/extensions/linearMode/MediaOutputPreview.vue'
 import OutputHistory from '@/renderer/extensions/linearMode/OutputHistory.vue'
 import { useOutputHistory } from '@/renderer/extensions/linearMode/useOutputHistory'
@@ -27,10 +26,9 @@ const mediaActions = useMediaAssetActions()
 const { isBuilderMode, isArrangeMode } = useAppMode()
 const { allOutputs, isWorkflowActive, cancelActiveWorkflowJobs } =
   useOutputHistory()
-const { runButtonClick, mobile, typeformWidgetId } = defineProps<{
+const { runButtonClick, mobile } = defineProps<{
   runButtonClick?: (e: Event) => void
   mobile?: boolean
-  typeformWidgetId?: string
 }>()
 
 const selectedItem = ref<AssetItem>()
@@ -151,20 +149,10 @@ async function rerun(e: Event) {
     v-if="!mobile"
     class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center"
   >
-    <LinearFeedback
-      v-if="typeformWidgetId"
-      side="left"
-      :widget-id="typeformWidgetId"
-    />
     <OutputHistory
       v-if="!isBuilderMode"
       class="z-10 min-w-0"
       @update-selection="handleSelection"
-    />
-    <LinearFeedback
-      v-if="typeformWidgetId"
-      side="right"
-      :widget-id="typeformWidgetId"
     />
   </div>
   <OutputHistory

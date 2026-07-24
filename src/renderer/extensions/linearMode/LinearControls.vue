@@ -7,12 +7,9 @@ import { useI18n } from 'vue-i18n'
 import AppModeWidgetList from '@/components/builder/AppModeWidgetList.vue'
 import { useErrorOverlayState } from '@/components/error/useErrorOverlayState'
 import Loader from '@/components/loader/Loader.vue'
-import ScrubableNumberInput from '@/components/common/ScrubableNumberInput.vue'
-import Popover from '@/components/ui/Popover.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useBillingContext } from '@/composables/billing/useBillingContext'
 import SubscribeToRunButton from '@/platform/cloud/subscription/components/SubscribeToRun.vue'
-import { useSettingStore } from '@/platform/settings/settingStore'
 import { useTelemetry } from '@/platform/telemetry'
 import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
 import LinearRunErrorWarning from '@/renderer/extensions/linearMode/LinearRunErrorWarning.vue'
@@ -27,7 +24,6 @@ import { useExecutionErrorStore } from '@/stores/executionErrorStore'
 const { t } = useI18n()
 const commandStore = useCommandStore()
 const { batchCount } = storeToRefs(useQueueSettingsStore())
-const settingStore = useSettingStore()
 const { isActiveSubscription } = useBillingContext()
 const workflowStore = useWorkflowStore()
 const { isBuilderMode } = useAppMode()
@@ -157,26 +153,6 @@ function handleDragDrop() {
           class="mt-4 w-full"
         />
         <div v-else class="flex">
-          <PartnerNodesList mobile />
-          <Popover side="top" @open-auto-focus.prevent>
-            <template #button>
-              <Button size="lg" class="-mr-3 pr-7">
-                <i v-if="batchCount == 1" class="icon-[lucide--chevron-down]" />
-                <div v-else class="tabular-nums" v-text="`${batchCount}x`" />
-              </Button>
-            </template>
-            <div
-              class="m-1 mb-2 text-node-component-slot-text"
-              v-text="t('linearMode.runCount')"
-            />
-            <ScrubableNumberInput
-              v-model="batchCount"
-              :aria-label="t('linearMode.runCount')"
-              :min="1"
-              :max="settingStore.get('Comfy.QueueButton.BatchCountLimit')"
-              class="h-10 min-w-40"
-            />
-          </Popover>
           <Button
             variant="primary"
             class="grow"
@@ -195,29 +171,12 @@ function handleDragDrop() {
       </section>
       <section
         v-else
-        :data-testid="linearRunButtonTestId"
-        class="border-t border-node-component-border p-4 pb-6"
+        data-testid="linear-run-button"
+        class="border-t border-node-component-border p-1"
       >
-        <LinearRunErrorWarning v-if="showRunErrorWarning" />
-        <div
-          class="m-1 mb-2 text-node-component-slot-text"
-          v-text="t('linearMode.runCount')"
-        />
-        <ScrubableNumberInput
-          v-model="batchCount"
-          :aria-label="t('linearMode.runCount')"
-          :min="1"
-          :max="settingStore.get('Comfy.QueueButton.BatchCountLimit')"
-          class="h-7 min-w-40"
-        />
-        <SubscribeToRunButton
-          v-if="!isActiveSubscription"
-          class="mt-4 w-full"
-        />
         <Button
-          v-else
           variant="primary"
-          class="mt-4 w-full text-sm"
+          class="w-full text-sm"
           size="lg"
           :aria-describedby="
             showRunErrorWarning
