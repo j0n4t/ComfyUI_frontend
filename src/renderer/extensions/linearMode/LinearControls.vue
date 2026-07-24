@@ -102,7 +102,15 @@ function handleDragDrop() {
         v-text="workflowStore.activeWorkflow?.filename"
       />
       <div class="flex-1" />
-      <Button v-if="false"> {{ t('menuLabels.publish') }} </Button>
+      <Button
+        variant="primary"
+        class="h-full text-sm"
+        size="lg"
+        @click="runButtonClick"
+      >
+        <i class="icon-[lucide--play]" />
+        {{ t('menu.run') }}
+      </Button>
     </section>
     <div
       class="flex h-full flex-col gap-2 border-x border-(--interface-stroke) bg-comfy-menu-bg px-2 md:border-y"
@@ -168,26 +176,6 @@ function handleDragDrop() {
             {{ t('menu.run') }}
           </Button>
         </div>
-      </section>
-      <section
-        v-else
-        data-testid="linear-run-button"
-        class="border-t border-node-component-border p-1"
-      >
-        <Button
-          variant="primary"
-          class="w-full text-sm"
-          size="lg"
-          :aria-describedby="
-            showRunErrorWarning
-              ? LINEAR_RUN_ERROR_WARNING_DESCRIPTION_ID
-              : undefined
-          "
-          @click="runButtonClick"
-        >
-          <i aria-hidden="true" class="icon-[lucide--play]" />
-          {{ t('menu.run') }}
-        </Button>
       </section>
     </div>
   </div>
