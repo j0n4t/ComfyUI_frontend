@@ -147,7 +147,7 @@ async function rerun(e: Event) {
   <LinearWelcome v-else />
   <div
     v-if="!mobile"
-    class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center"
+    class="absolute bottom-0 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center bg-backdrop/50 opacity-0 hover:opacity-100"
   >
     <OutputHistory
       v-if="!isBuilderMode"
