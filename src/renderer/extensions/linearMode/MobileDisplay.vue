@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { MenuItem } from 'primevue/menuitem'
-import { useFullscreen, usePointerSwipe } from '@vueuse/core'
+import { useFullscreen, usePointerSwipe, useTimeout } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import DropdownMenu from '@/components/common/DropdownMenu.vue'
 import AssetsSidebarTab from '@/components/sidebar/tabs/AssetsSidebarTab.vue'
-import CurrentUserButton from '@/components/topbar/CurrentUserButton.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { useCurrentUser } from '@/composables/auth/useCurrentUser'
 import { useWorkflowService } from '@/platform/workflow/core/services/workflowService'
 import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
 import { useCanvasStore } from '@/renderer/core/canvas/canvasStore'
@@ -21,6 +19,8 @@ import { useQueueStore } from '@/stores/queueStore'
 import { useMenuItemStore } from '@/stores/menuItemStore'
 import { useColorPaletteStore } from '@/stores/workspace/colorPaletteStore'
 import { cn } from '@comfyorg/tailwind-utils'
+import { storeToRefs } from 'pinia'
+import { useCommandStore } from '@/stores/commandStore'
 
 const tabs = [
   ['linearMode.mobileControls', 'icon-[lucide--play]', 'control'],
@@ -29,9 +29,9 @@ const tabs = [
 ]
 
 const canvasStore = useCanvasStore()
+const commandStore = useCommandStore()
 const colorPaletteService = useColorPaletteService()
 const colorPaletteStore = useColorPaletteStore()
-const { isLoggedIn } = useCurrentUser()
 const executionErrorStore = useExecutionErrorStore()
 const { t } = useI18n()
 const { commandIdToMenuItem } = useMenuItemStore()
@@ -41,6 +41,8 @@ const workflowStore = useWorkflowStore()
 const { toggle: toggleFullscreen } = useFullscreen(undefined, {
   autoExit: true
 })
+const { hasMissingError } = storeToRefs(useExecutionErrorStore())
+
 
 const activeIndex = ref(1)
 const sliderPaneRef = useTemplateRef('sliderPaneRef')
@@ -152,6 +154,40 @@ const menuEntries = computed<MenuItem[]>(() => [
     command: toggleFullscreen
   }
 ])
+const runButtonIconClass = computed(() =>
+  hasMissingError.value
+    ? 'icon-[lucide--triangle-alert]'
+    : 'icon-[lucide--play]'
+)
+
+const pendingJobQueues = ref(0)
+const { start: resetJobToastTimeout } = useTimeout(
+  8000,
+  { controls: true, immediate: false }
+)
+
+//TODO: refactor out of this file.
+//code length is small, but changes should propagate
+async function runButtonClick(e: Event) {
+  try {
+    pendingJobQueues.value += 1
+    resetJobToastTimeout()
+    const isShiftPressed = 'shiftKey' in e && e.shiftKey
+    const commandId = isShiftPressed
+      ? 'Comfy.QueuePromptFront'
+      : 'Comfy.QueuePrompt'
+
+    await commandStore.execute(commandId, {
+      metadata: {
+        subscribe_to_run: false,
+        trigger_source: 'linear'
+      }
+    })
+  } finally {
+    //TODO: Error state indicator for failed queue?
+    pendingJobQueues.value -= 1
+  }
+}
 </script>
 <template>
   <section
@@ -186,7 +222,25 @@ const menuEntries = computed<MenuItem[]>(() => [
           </div>
         </template>
       </DropdownMenu>
-      <CurrentUserButton v-if="isLoggedIn" :show-arrow="false" />
+       <section
+        class="border-t border-node-component-border p-2"
+      >
+        <div class="flex">
+          <Button
+            variant="primary"
+            class="grow"
+            size="md"
+            @click="runButtonClick"
+          >
+            <i
+              aria-hidden="true"
+              :class="runButtonIconClass"
+              data-testid="linear-run-button-icon"
+            />
+            {{ t('menu.run') }}
+          </Button>
+        </div>
+      </section>
     </header>
     <div class="size-full contain-content">
       <div
