@@ -43,7 +43,6 @@ const { toggle: toggleFullscreen } = useFullscreen(undefined, {
 })
 const { hasMissingError } = storeToRefs(useExecutionErrorStore())
 
-
 const activeIndex = ref(1)
 const sliderPaneRef = useTemplateRef('sliderPaneRef')
 const sliderWidth = computed(() => sliderPaneRef.value?.offsetWidth)
@@ -161,10 +160,10 @@ const runButtonIconClass = computed(() =>
 )
 
 const pendingJobQueues = ref(0)
-const { start: resetJobToastTimeout } = useTimeout(
-  8000,
-  { controls: true, immediate: false }
-)
+const { start: resetJobToastTimeout } = useTimeout(8000, {
+  controls: true,
+  immediate: false
+})
 
 //TODO: refactor out of this file.
 //code length is small, but changes should propagate
@@ -195,9 +194,9 @@ async function runButtonClick(e: Event) {
     data-testid="linear-mobile"
   >
     <header
-      class="flex h-14 w-full items-center gap-3 border-b border-border-subtle bg-secondary-background px-2"
+      class="flex h-8 w-full items-center gap-3 border-b border-border-subtle bg-secondary-background px-2"
     >
-      <DropdownMenu :entries="menuEntries" button-size="lg" />
+      <DropdownMenu :entries="menuEntries" button-size="md" />
       <DropdownMenu
         :entries="workflowsEntries"
         class="max-h-[40vh] w-(--reka-dropdown-menu-content-available-width) overflow-y-auto"
@@ -206,7 +205,7 @@ async function runButtonClick(e: Event) {
         <template #button>
           <!--TODO: Use button here? Probably too much work to destyle-->
           <div
-            class="flex h-10 grow items-center gap-2 rounded-sm bg-secondary-background p-2"
+            class="flex h-5 grow items-center gap-2 rounded-sm bg-secondary-background"
             data-testid="linear-mobile-workflows"
           >
             <i
@@ -222,14 +221,12 @@ async function runButtonClick(e: Event) {
           </div>
         </template>
       </DropdownMenu>
-       <section
-        class="border-t border-node-component-border p-2"
-      >
+      <section class="border-t border-node-component-border p-2">
         <div class="flex">
           <Button
             variant="primary"
             class="grow"
-            size="md"
+            size="sm"
             @click="runButtonClick"
           >
             <i

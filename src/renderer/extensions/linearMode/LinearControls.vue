@@ -23,7 +23,6 @@ const { isBuilderMode } = useAppMode()
 const appModeStore = useAppModeStore()
 const { hasOutputs } = storeToRefs(appModeStore)
 
-
 const { toastTo, mobile } = defineProps<{
   toastTo?: string | HTMLElement
   mobile?: boolean
