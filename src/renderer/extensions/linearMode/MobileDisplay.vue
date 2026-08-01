@@ -221,23 +221,6 @@ async function runButtonClick(e: Event) {
           </div>
         </template>
       </DropdownMenu>
-      <section class="border-t border-node-component-border p-2">
-        <div class="flex">
-          <Button
-            variant="primary"
-            class="grow"
-            size="sm"
-            @click="runButtonClick"
-          >
-            <i
-              aria-hidden="true"
-              :class="runButtonIconClass"
-              data-testid="linear-run-button-icon"
-            />
-            {{ t('menu.run') }}
-          </Button>
-        </div>
-      </section>
     </header>
     <div class="size-full contain-content">
       <div
@@ -282,7 +265,7 @@ async function runButtonClick(e: Event) {
     </div>
     <div
       ref="sliderPaneRef"
-      class="flex h-12 w-full items-center justify-around gap-4 bg-secondary-background p-1"
+      class="flex h-8 w-full items-center justify-around gap-4 bg-secondary-background p-1"
       role="tablist"
     >
       <Button
@@ -313,6 +296,23 @@ async function runButtonClick(e: Event) {
         </div>
         <!-- {{ t(label) }} -->
       </Button>
+      <section>
+        <div class="flex">
+          <Button
+            variant="primary"
+            class="grow"
+            size="sm"
+            @click="runButtonClick"
+          >
+            <i
+              aria-hidden="true"
+              :class="runButtonIconClass"
+              data-testid="linear-run-button-icon"
+            />
+            {{ t('menu.run') }}
+          </Button>
+        </div>
+      </section>
     </div>
   </section>
 </template>
