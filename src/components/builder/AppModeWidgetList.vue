@@ -199,7 +199,7 @@ defineExpose({ handleDragDrop })
     <div
       :class="
         cn(
-          'mt-1.5 flex min-h-8 items-center gap-1 px-3',
+          'mt-0.5 flex min-h-8 items-center gap-1 px-3',
           builderMode && 'drag-handle'
         )
       "

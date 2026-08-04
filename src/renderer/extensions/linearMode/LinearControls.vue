@@ -7,18 +7,18 @@ import { useI18n } from 'vue-i18n'
 import AppModeWidgetList from '@/components/builder/AppModeWidgetList.vue'
 import { useErrorOverlayState } from '@/components/error/useErrorOverlayState'
 import Loader from '@/components/loader/Loader.vue'
-import ScrubableNumberInput from '@/components/common/ScrubableNumberInput.vue'
+// import ScrubableNumberInput from '@/components/common/ScrubableNumberInput.vue'
 import { COACH_IDS } from '@/platform/onboarding/onboardingTours'
-import { useOnboardingTourStore } from '@/platform/onboarding/onboardingTourStore'
+// import { useOnboardingTourStore } from '@/platform/onboarding/onboardingTourStore'
 import { vCoachmark } from '@/platform/onboarding/vCoachmark'
-import Popover from '@/components/ui/Popover.vue'
+// import Popover from '@/components/ui/Popover.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useBillingContext } from '@/composables/billing/useBillingContext'
 import FreeTierQuota from '@/platform/cloud/subscription/components/FreeTierQuota.vue'
-import SubscribeToRunButton from '@/platform/cloud/subscription/components/SubscribeToRun.vue'
-import { useSettingStore } from '@/platform/settings/settingStore'
+// import SubscribeToRunButton from '@/platform/cloud/subscription/components/SubscribeToRun.vue'
+// import { useSettingStore } from '@/platform/settings/settingStore'
 import { useTelemetry } from '@/platform/telemetry'
-import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
+// import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
 import LinearRunErrorWarning from '@/renderer/extensions/linearMode/LinearRunErrorWarning.vue'
 import { LINEAR_RUN_ERROR_WARNING_DESCRIPTION_ID } from '@/renderer/extensions/linearMode/linearRunErrorWarningIds'
 import PartnerNodesList from '@/renderer/extensions/linearMode/PartnerNodesList.vue'
@@ -31,9 +31,9 @@ import { useExecutionErrorStore } from '@/stores/executionErrorStore'
 const { t } = useI18n()
 const commandStore = useCommandStore()
 const { batchCount } = storeToRefs(useQueueSettingsStore())
-const settingStore = useSettingStore()
-const { canRunWorkflows, showsSubscribeToRunPrompt } = useBillingContext()
-const workflowStore = useWorkflowStore()
+// const settingStore = useSettingStore()
+const { canRunWorkflows } = useBillingContext()
+// const workflowStore = useWorkflowStore()
 const { isBuilderMode } = useAppMode()
 const appModeStore = useAppModeStore()
 const { hasOutputs } = storeToRefs(appModeStore)
@@ -99,9 +99,9 @@ function handleDragDrop() {
   return widgetListRef.value?.handleDragDrop()
 }
 
-function replayAppModeTour() {
-  useOnboardingTourStore().replayTour('appMode')
-}
+// function replayAppModeTour() {
+//   useOnboardingTourStore().replayTour('appMode')
+// }
 </script>
 <template>
   <div
@@ -109,7 +109,7 @@ function replayAppModeTour() {
     class="flex h-full min-w-80 flex-col"
     v-bind="$attrs"
   >
-    <section
+    <!-- <section
       v-if="!mobile"
       data-testid="linear-workflow-info"
       class="flex h-12 items-center gap-2 border-x border-border-subtle bg-comfy-menu-bg px-4 py-2 contain-size"
@@ -132,7 +132,7 @@ function replayAppModeTour() {
       >
         <i class="icon-[lucide--circle-question-mark] size-4" />
       </Button>
-    </section>
+    </section> -->
     <div
       class="flex h-full flex-col gap-2 border-x border-(--interface-stroke) bg-comfy-menu-bg px-2 md:border-y"
     >
@@ -179,12 +179,9 @@ function replayAppModeTour() {
       >
         <LinearRunErrorWarning v-if="showRunErrorWarning" />
         <div v-coachmark="COACH_IDS.appRunButton">
-          <SubscribeToRunButton
-            v-if="showsSubscribeToRunPrompt"
-            class="mt-4 w-full"
-          />
-          <div v-else class="mt-4 flex">
-            <PartnerNodesList mobile />
+          <!-- <SubscribeToRunButton v-if="!canRunWorkflows" class="mt-4 w-full" /> -->
+          <div class="mt-4 flex">
+            <!-- <PartnerNodesList mobile />
             <Popover side="top" @open-auto-focus.prevent>
               <template #button>
                 <Button size="lg" class="-mr-3 pr-7">
@@ -206,7 +203,7 @@ function replayAppModeTour() {
                 :max="settingStore.get('Comfy.QueueButton.BatchCountLimit')"
                 class="h-10 min-w-40"
               />
-            </Popover>
+            </Popover> -->
             <Button
               variant="primary"
               class="grow"
@@ -231,11 +228,11 @@ function replayAppModeTour() {
       <section
         v-else
         :data-testid="linearRunButtonTestId"
-        class="border-t border-node-component-border p-4 pb-6"
+        class="border-t border-node-component-border p-2"
       >
         <LinearRunErrorWarning v-if="showRunErrorWarning" />
         <div v-coachmark="COACH_IDS.appRunButton">
-          <div
+          <!-- <div
             class="m-1 mb-2 text-node-component-slot-text"
             v-text="t('linearMode.runCount')"
           />
@@ -245,15 +242,11 @@ function replayAppModeTour() {
             :min="1"
             :max="settingStore.get('Comfy.QueueButton.BatchCountLimit')"
             class="h-7 min-w-40"
-          />
-          <SubscribeToRunButton
-            v-if="showsSubscribeToRunPrompt"
-            class="mt-4 w-full"
-          />
+          /> -->
+          <!-- <SubscribeToRunButton v-if="!canRunWorkflows" class="mt-4 w-full" /> -->
           <Button
-            v-else
             variant="primary"
-            class="mt-4 w-full text-sm"
+            class="w-full text-sm"
             size="lg"
             :aria-describedby="
               showRunErrorWarning
