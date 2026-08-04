@@ -81,7 +81,7 @@ async function rerun(e: Event) {
   <section
     v-if="selectedItem || selectedOutput || showSkeleton || isWorkflowActive"
     data-testid="linear-output-info"
-    class="flex w-full flex-wrap justify-center gap-2 p-4 text-sm tabular-nums md:z-10"
+    class="absolute right-0 flex flex-wrap justify-center gap-2 p-2 text-sm tabular-nums opacity-15 hover:opacity-100 md:z-10"
   >
     <template v-if="selectedItem">
       <Button size="md" @click="rerun">
@@ -151,7 +151,7 @@ async function rerun(e: Event) {
   <LinearWelcome v-else />
   <OutputHistory
     v-if="!isBuilderMode"
-    :class="cn(!mobile && 'z-10 min-w-0')"
+    :class="cn(!mobile && 'absolute bottom-0 z-10 min-w-0 opacity-15 hover:opacity-100')"
     @update-selection="handleSelection"
   />
 </template>
