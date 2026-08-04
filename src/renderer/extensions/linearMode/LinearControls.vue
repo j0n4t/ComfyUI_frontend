@@ -21,7 +21,7 @@ import { useTelemetry } from '@/platform/telemetry'
 // import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
 import LinearRunErrorWarning from '@/renderer/extensions/linearMode/LinearRunErrorWarning.vue'
 import { LINEAR_RUN_ERROR_WARNING_DESCRIPTION_ID } from '@/renderer/extensions/linearMode/linearRunErrorWarningIds'
-import PartnerNodesList from '@/renderer/extensions/linearMode/PartnerNodesList.vue'
+// import PartnerNodesList from '@/renderer/extensions/linearMode/PartnerNodesList.vue'
 import { useCommandStore } from '@/stores/commandStore'
 import { useQueueSettingsStore } from '@/stores/queueSettingsStore'
 import { useAppMode } from '@/composables/useAppMode'
@@ -171,16 +171,16 @@ function handleDragDrop() {
           </template>
         </div>
       </Teleport>
-      <PartnerNodesList v-if="!mobile" />
-      <section
+      <!-- <PartnerNodesList v-if="!mobile" /> -->
+      <!-- <section
         v-if="mobile"
         :data-testid="linearRunButtonTestId"
         class="border-t border-node-component-border p-4 pb-6"
       >
-        <LinearRunErrorWarning v-if="showRunErrorWarning" />
-        <div v-coachmark="COACH_IDS.appRunButton">
+        <LinearRunErrorWarning v-if="showRunErrorWarning" /> -->
+        <!-- <div v-coachmark="COACH_IDS.appRunButton"> -->
           <!-- <SubscribeToRunButton v-if="!canRunWorkflows" class="mt-4 w-full" /> -->
-          <div class="mt-4 flex">
+          <!-- <div class="mt-4 flex"> -->
             <!-- <PartnerNodesList mobile />
             <Popover side="top" @open-auto-focus.prevent>
               <template #button>
@@ -204,7 +204,7 @@ function handleDragDrop() {
                 class="h-10 min-w-40"
               />
             </Popover> -->
-            <Button
+            <!-- <Button
               variant="primary"
               class="grow"
               size="lg"
@@ -221,12 +221,12 @@ function handleDragDrop() {
                 data-testid="linear-run-button-icon"
               />
               {{ t('menu.run') }}
-            </Button>
-          </div>
-        </div>
-      </section>
+            </Button> -->
+          <!-- </div> -->
+        <!-- </div> -->
+      <!-- </section> -->
       <section
-        v-else
+        v-if="!mobile"
         :data-testid="linearRunButtonTestId"
         class="border-t border-node-component-border p-2"
       >

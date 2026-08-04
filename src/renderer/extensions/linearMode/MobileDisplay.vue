@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MenuItem } from 'primevue/menuitem'
-import { useFullscreen, usePointerSwipe } from '@vueuse/core'
+import { useFullscreen, usePointerSwipe, useTimeout } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -22,6 +22,8 @@ import { useQueueStore } from '@/stores/queueStore'
 import { useMenuItemStore } from '@/stores/menuItemStore'
 import { useColorPaletteStore } from '@/stores/workspace/colorPaletteStore'
 import { cn } from '@comfyorg/tailwind-utils'
+import { storeToRefs } from 'pinia'
+import { useCommandStore } from '@/stores/commandStore'
 
 const tabs = [
   ['linearMode.mobileControls', 'icon-[lucide--play]', 'control'],
@@ -158,6 +160,41 @@ const menuEntries = computed<MenuItem[]>(() => [
     command: toggleFullscreen
   }
 ])
+const { hasMissingError } = storeToRefs(useExecutionErrorStore())
+//NOTE: due to batching, will never be greater than 2
+const pendingJobQueues = ref(0)
+const { start: resetJobToastTimeout } = useTimeout(
+  8000,
+  { controls: true, immediate: false }
+)
+const runButtonIconClass = computed(() =>
+  hasMissingError.value
+    ? 'icon-[lucide--triangle-alert]'
+    : 'icon-[lucide--play]'
+)
+
+const commandStore = useCommandStore()
+
+async function runButtonClick(e: Event) {
+  try {
+    pendingJobQueues.value += 1
+    resetJobToastTimeout()
+    const isShiftPressed = 'shiftKey' in e && e.shiftKey
+    const commandId = isShiftPressed
+      ? 'Comfy.QueuePromptFront'
+      : 'Comfy.QueuePrompt'
+
+    await commandStore.execute(commandId, {
+      metadata: {
+        subscribe_to_run: false,
+        trigger_source: 'linear'
+      }
+    })
+  } finally {
+    //TODO: Error state indicator for failed queue?
+    pendingJobQueues.value -= 1
+  }
+}
 </script>
 <template>
   <section
@@ -268,6 +305,19 @@ const menuEntries = computed<MenuItem[]>(() => [
         </div>
         <!-- {{ t(label) }} -->
       </Button>
+       <Button
+              variant="primary"
+              class="h-8 grow p-0"
+              size="lg"
+              @click="runButtonClick"
+            >
+              <i
+                aria-hidden="true"
+                :class="runButtonIconClass"
+                data-testid="linear-run-button-icon"
+              />
+              {{ t('menu.run') }}
+            </Button>
     </div>
   </section>
 </template>
