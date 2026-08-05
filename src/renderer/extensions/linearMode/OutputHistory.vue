@@ -300,7 +300,7 @@ useEventListener(document.body, 'keydown', (e: KeyboardEvent) => {
 <template>
   <div
     role="group"
-    class="absolute bottom-2 flex h-21 min-w-0 items-start justify-center px-4 py-3 pb-4 opacity-15 hover:opacity-100"
+    class="absolute bottom-2 flex h-21 min-w-0 items-start justify-center px-4 py-3 pb-4 opacity-0 hover:opacity-100"
   >
     <div
       v-if="queueCount > 0 || hasActiveContent"

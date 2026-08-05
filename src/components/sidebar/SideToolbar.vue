@@ -25,7 +25,7 @@
       :class="
         isOverflowing
           ? 'side-tool-bar-container overflow-y-auto'
-          : 'absolute top-15 left-2.5 z-10 flex flex-col rounded-sm border-2 border-base-background opacity-15 hover:opacity-100'
+          : 'absolute top-15 left-2.5 z-10 flex flex-col rounded-sm border-2 border-base-background opacity-0 hover:opacity-100'
       "
     >
       <div ref="topToolbarRef" :class="groupClasses">

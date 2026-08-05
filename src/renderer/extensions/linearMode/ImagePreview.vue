@@ -49,11 +49,11 @@ function onImageLoad() {
   />
   <span
     v-if="executionStatusMessage"
-    class="absolute bottom-2 animate-pulse self-center text-muted opacity-15 hover:opacity-100 md:z-10"
+    class="absolute bottom-2 animate-pulse self-center text-muted opacity-0 hover:opacity-100 md:z-10"
   >
     {{ executionStatusMessage }}
   </span>
-  <span v-else-if="width && height" class="absolute bottom-2 self-center opacity-15 hover:opacity-100 md:z-10">
+  <span v-else-if="width && height" class="absolute bottom-2 self-center opacity-0 hover:opacity-100 md:z-10">
     {{ `${width} x ${height}` }}
     <template v-if="label"> | {{ label }}</template>
   </span>

@@ -162,7 +162,7 @@ function dragDrop(e: DragEvent) {
           <LinearPreview
             :run-button-click="linearWorkflowRef?.runButtonClick"
           />
-          <div class="absolute top-2 left-2 z-21 opacity-15 hover:opacity-100">
+          <div class="absolute top-2 left-2 z-21 opacity-0 hover:opacity-100">
             <AppModeToolbar v-if="!isBuilderMode" />
           </div>
           <div ref="bottomLeftRef" class="absolute bottom-7 left-4 z-20" />
