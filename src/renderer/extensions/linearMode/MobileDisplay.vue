@@ -307,7 +307,7 @@ async function runButtonClick(e: Event) {
       </Button>
        <Button
               variant="primary"
-              class="h-8 grow p-0"
+              class="m-1 h-8 grow p-0"
               size="lg"
               @click="runButtonClick"
             >
