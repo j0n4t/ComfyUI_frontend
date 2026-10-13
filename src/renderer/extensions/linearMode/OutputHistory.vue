@@ -306,7 +306,7 @@ useEventListener(document.body, 'keydown', (e: KeyboardEvent) => {
 <template>
   <div
     role="group"
-    class="flex h-21 min-w-0 items-start justify-center px-4 py-3 pb-4"
+    class="flex h-21 min-w-0 items-start justify-end px-4 py-3 pb-4"
   >
     <div
       v-if="queueCount > 0 || hasActiveContent"

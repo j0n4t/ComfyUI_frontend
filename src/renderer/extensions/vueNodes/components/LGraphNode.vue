@@ -36,7 +36,6 @@
     :inert="isGhostPlacing"
     v-bind="pointerHandlers"
     @wheel="handleWheel"
-    @contextmenu="handleContextMenu"
     @dragover.prevent="handleDragOver"
     @dragleave="handleDragLeave"
     @drop="handleDrop"

@@ -108,7 +108,7 @@ async function rerun(e: Event) {
   <section
     v-if="selectedItem || selectedOutput || showSkeleton || isWorkflowActive"
     data-testid="linear-output-info"
-    class="flex w-full flex-wrap justify-center gap-2 p-4 text-sm tabular-nums md:z-10"
+    class="flex w-full flex-wrap justify-end gap-2 p-4 text-sm tabular-nums md:z-10"
   >
     <template v-if="selectedItem">
       <Button size="md" @click="rerun">
