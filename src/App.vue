@@ -26,7 +26,7 @@ import GlobalDialog from '@/components/dialog/GlobalDialog.vue'
 import config from '@/config'
 import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue'
 import SessionReconnecting from '@/platform/auth/session/components/SessionReconnecting.vue'
-import { isCloud, isDesktop } from '@/platform/distribution/types'
+import { isCloud } from '@/platform/distribution/types'
 import {
   reportPreloadError,
   reportResourceLoadError
@@ -65,23 +65,8 @@ watch(
   { flush: 'post' }
 )
 
-const showContextMenu = (event: MouseEvent) => {
-  const { target } = event
-  switch (true) {
-    case target instanceof HTMLTextAreaElement:
-    case target instanceof HTMLInputElement && target.type === 'text':
-      // TODO: Context input menu explicitly for text input
-      electronAPI()?.showContextMenu({ type: 'text' })
-      return
-  }
-}
-
 onMounted(() => {
   window['__COMFYUI_FRONTEND_VERSION__'] = config.app_version
-
-  if (isDesktop) {
-    document.addEventListener('contextmenu', showContextMenu)
-  }
 
   // Handle preload errors that occur during dynamic imports (e.g., stale chunks after deployment)
   // See: https://vite.dev/guide/build#load-error-handling

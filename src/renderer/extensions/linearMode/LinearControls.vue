@@ -257,7 +257,7 @@ function replayAppModeTour() {
       <section
         v-if="mobile"
         :data-testid="linearRunButtonTestId"
-        class="border-t border-node-component-border p-4 pb-6"
+        class="border-t border-node-component-border p-1"
       >
         <LinearRunErrorWarning v-if="showRunErrorWarning" />
         <div v-coachmark="COACH_IDS.appRunButton">
@@ -265,7 +265,7 @@ function replayAppModeTour() {
             v-if="showsCloudSubscribePrompt"
             class="mt-4 w-full"
           />
-          <div v-else class="mt-4 flex">
+          <div v-else class="flex">
             <PartnerNodesList mobile />
             <Popover side="top" @open-auto-focus.prevent>
               <template #button>
@@ -316,12 +316,12 @@ function replayAppModeTour() {
       <section
         v-else
         :data-testid="linearRunButtonTestId"
-        class="border-t border-node-component-border p-4 pb-6"
+        class="border-t border-node-component-border p-2"
       >
         <LinearRunErrorWarning v-if="showRunErrorWarning" />
         <div v-coachmark="COACH_IDS.appRunButton">
           <div
-            class="m-1 mb-2 text-node-component-slot-text"
+            class="m-1 mb-2 hidden text-node-component-slot-text"
             v-text="t('linearMode.runCount')"
           />
           <ScrubableNumberInput
@@ -329,7 +329,7 @@ function replayAppModeTour() {
             :aria-label="t('linearMode.runCount')"
             :min="1"
             :max="settingStore.get('Comfy.QueueButton.BatchCountLimit')"
-            class="h-7 min-w-40"
+            class="hidden h-7 min-w-40"
           />
           <SubscribeToRunButton
             v-if="showsCloudSubscribePrompt"
@@ -338,7 +338,7 @@ function replayAppModeTour() {
           <Button
             v-else
             variant="inverted"
-            class="mt-4 w-full"
+            class="w-full text-sm"
             size="lg"
             :aria-describedby="
               isPreparingInputDownloads
