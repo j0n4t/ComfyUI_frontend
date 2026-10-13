@@ -167,7 +167,7 @@ const menuEntries = computed<MenuItem[]>(() => [
     data-testid="linear-mobile"
   >
     <header
-      class="flex h-16 w-full items-center gap-3 border-b border-border/50 bg-background px-4 py-3"
+      class="flex w-full items-center gap-3 border-b border-border/50 bg-secondary"
     >
       <Menu :items="menuEntries" :label="$t('linearMode.appModeToolbar.apps')">
         <template #trigger>
@@ -200,7 +200,7 @@ const menuEntries = computed<MenuItem[]>(() => [
       </Menu>
       <CurrentUserButton v-if="isLoggedIn" :show-arrow="false" />
     </header>
-    <div class="size-full rounded-b-4xl contain-content">
+    <div class="size-full contain-content">
       <div
         :class="
           cn('relative size-full', !isSwiping && 'transition-[translate]')
@@ -244,7 +244,7 @@ const menuEntries = computed<MenuItem[]>(() => [
     </div>
     <div
       ref="sliderPaneRef"
-      class="flex h-22 w-full items-center justify-around gap-4 bg-secondary p-4"
+      class="flex w-full items-center justify-around gap-4 bg-secondary"
       role="tablist"
     >
       <Button
@@ -252,7 +252,7 @@ const menuEntries = computed<MenuItem[]>(() => [
         :id="`mobile-app-${id}-tab`"
         :key="label"
         :variant="index === activeIndex ? 'secondary' : 'muted-textonly'"
-        class="h-14 grow flex-col"
+        class="grow flex-col"
         role="tab"
         :aria-selected="index === activeIndex"
         :aria-controls="`mobile-app-${id}-panel`"
@@ -273,7 +273,6 @@ const menuEntries = computed<MenuItem[]>(() => [
             class="absolute -top-1 -right-1 size-2 animate-pulse rounded-full bg-primary"
           />
         </div>
-        {{ t(label) }}
       </Button>
     </div>
   </section>
